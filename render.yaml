@@ -1,8 +1,9 @@
 services:
   # Backend API
   - type: web
-    name: lost-found-backend
+    name: lost-found-backend-pcn
     env: docker
+    region: oregon
     dockerContext: ./backend
     dockerfilePath: Dockerfile
     plan: free
@@ -12,12 +13,13 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: AI_ENGINE_URL
-        value: http://lost-found-ai-engine:8000
+        value: http://lost-found-ai-engine-pcn:8000
 
   # AI Engine
   - type: web
-    name: lost-found-ai-engine
+    name: lost-found-ai-engine-pcn
     env: docker
+    region: oregon
     dockerContext: ./ai-engine
     dockerfilePath: Dockerfile
     plan: free 
@@ -25,13 +27,14 @@ services:
 
   # Frontend (Static Site served by Nginx Docker)
   - type: web
-    name: lost-found-frontend
+    name: lost-found-frontend-pcn
     env: docker
+    region: oregon
     dockerContext: ./frontend
     dockerfilePath: Dockerfile
     plan: free
     envVars:
       - key: VITE_API_URL
-        value: https://lost-found-backend.onrender.com
+        value: https://lost-found-backend-pcn.onrender.com
     dockerBuildArgs:
-      VITE_API_URL: https://lost-found-backend.onrender.com
+      VITE_API_URL: https://lost-found-backend-pcn.onrender.com
