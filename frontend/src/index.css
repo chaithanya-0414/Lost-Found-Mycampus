@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --color-dashboard-bg: #F5F7FB;
+  --color-dashboard-sidebar: #FFFFFF;
+  --color-dashboard-card: #FFFFFF;
+  --color-dashboard-border: #E5E7EB;
+  
+  --color-primary-blue: #3B82F6;
+  --color-primary-hover: #2563EB;
+  
+  --color-success-green: #22C55E;
+  
+  --color-text-main: #1F2937;
+  --color-text-muted: #6B7280;
+}
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  @apply bg-dashboard-bg text-text-main antialiased;
+  font-family: var(--font-sans);
+}
+
+/* SaaS Component Utilities */
+.card-saas {
+  @apply bg-dashboard-card p-6 rounded-2xl shadow-sm border border-dashboard-border;
+}
+
+.btn-primary-saas {
+  @apply bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-all font-semibold active:scale-95;
+}
+
+.badge-saas {
+  @apply px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+}
+
+.badge-success {
+  @apply bg-green-100 text-success-green;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.badge-error {
+  @apply bg-red-100 text-red-600;
+}

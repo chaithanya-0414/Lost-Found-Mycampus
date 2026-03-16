@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  role          String         @default("student") // student, admin
+  createdAt     DateTime       @default(now())
+  items         Item[]
+  claimRequests ClaimRequest[]
+}
+
+model Item {
+  id            String         @id @default(uuid())
+  title         String
+  description   String
+  category      String
+  imageUrl      String?
+  status        String         @default("lost") // lost, found, returned
+  userId        String
+  user          User           @relation(fields: [userId], references: [id])
+  location      Location?
+  contactPhone  String?        // Optional contact number
+  createdAt     DateTime       @default(now())
+  claimRequests ClaimRequest[]
+  
+  // Storage for AI features
+  embeddings    Json?          // Array of floats
+  
+  // Matches where this item is a lost item
+  lostMatches   Match[]        @relation("LostItemMatches")
+  // Matches where this item is a found item
+  foundMatches  Match[]        @relation("FoundItemMatches")
+}
+
+model Location {
+  id        String @id @default(uuid())
+  itemId    String @unique
+  item      Item   @relation(fields: [itemId], references: [id])
+  latitude  Float
+  longitude Float
+  placeName String
+}
+
+model ClaimRequest {
+  id         String   @id @default(uuid())
+  itemId     String
+  item       Item     @relation(fields: [itemId], references: [id])
+  claimantId String
+  claimant   User     @relation(fields: [claimantId], references: [id])
+  answers    Json     // Detailed answers to questions
+  status     String   @default("pending") // pending, approved, rejected
+  createdAt  DateTime @default(now())
+}
+
+model Match {
+  id              String   @id @default(uuid())
+  lostItemId      String
+  lostItem        Item     @relation("LostItemMatches", fields: [lostItemId], references: [id])
+  foundItemId     String
+  foundItem       Item     @relation("FoundItemMatches", fields: [foundItemId], references: [id])
+  similarityScore Float
+  createdAt       DateTime @default(now())
+
+  @@unique([lostItemId, foundItemId])
+}
+
+model AdminLog {
+  id        String   @id @default(uuid())
+  adminId   String
+  action    String   // e.g., DELETE_USER, DELETE_ITEM, APPROVE_CLAIM
+  targetId  String?  // ID of the target object
+  details   String?  // Additional context
+  createdAt DateTime @default(now())
+}
