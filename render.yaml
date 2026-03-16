@@ -36,5 +36,3 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://lost-found-backend-pcn.onrender.com
-    dockerBuildArgs:
-      VITE_API_URL: https://lost-found-backend-pcn.onrender.com
