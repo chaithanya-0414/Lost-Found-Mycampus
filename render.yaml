@@ -1,0 +1,45 @@
+services:
+  # Backend API
+  - type: web
+    name: lost-found-backend
+    env: docker
+    dockerContext: ./backend
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        value: file:./data/dev.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: AI_ENGINE_URL
+        fromService:
+          type: web
+          name: lost-found-ai-engine
+          property: host
+    disk:
+      name: sqlite-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  # AI Engine
+  - type: web
+    name: lost-found-ai-engine
+    env: docker
+    dockerContext: ./ai-engine
+    dockerfilePath: Dockerfile
+    plan: free # Note: PyTorch might need more RAM than Render Free offers (512MB)
+    healthCheckPath: /
+
+  # Frontend (Static Site served by Nginx Docker)
+  - type: web
+    name: lost-found-frontend
+    env: docker
+    dockerContext: ./frontend
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: lost-found-backend
+          property: host
