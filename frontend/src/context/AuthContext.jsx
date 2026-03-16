@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 
 const AuthContext = createContext();
 
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         const userData = JSON.parse(storedUser);
         try {
           // Verify and refresh user data from server
-          const res = await axios.get('http://localhost:5000/api/auth/me', {
+          const res = await axios.get(`${API_BASE_URL}/api/auth/me`, {
             headers: { Authorization: `Bearer ${userData.token}` }
           });
           const updatedUser = { ...userData, ...res.data };
@@ -32,14 +33,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+    const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
     localStorage.setItem('user', JSON.stringify(response.data));
     setUser(response.data);
     return response.data;
   };
 
   const register = async (name, email, password) => {
-    const response = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+    const response = await axios.post(`${API_BASE_URL}/api/auth/register`, { name, email, password });
     localStorage.setItem('user', JSON.stringify(response.data));
     setUser(response.data);
     return response.data;
