@@ -8,14 +8,11 @@ services:
     plan: free
     envVars:
       - key: DATABASE_URL
-        value: file:./dev.db
+        value: file:/app/prisma/dev.db
       - key: JWT_SECRET
         generateValue: true
       - key: AI_ENGINE_URL
-        fromService:
-          type: web
-          name: lost-found-ai-engine
-          property: host
+        value: http://lost-found-ai-engine:8000
 
   # AI Engine
   - type: web
@@ -23,7 +20,7 @@ services:
     env: docker
     dockerContext: ./ai-engine
     dockerfilePath: Dockerfile
-    plan: free # Note: PyTorch might need more RAM than Render Free offers (512MB)
+    plan: free 
     healthCheckPath: /
 
   # Frontend (Static Site served by Nginx Docker)
@@ -35,7 +32,6 @@ services:
     plan: free
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: lost-found-backend
-          property: host
+        value: https://lost-found-backend.onrender.com
+    dockerBuildArgs:
+      VITE_API_URL: https://lost-found-backend.onrender.com
