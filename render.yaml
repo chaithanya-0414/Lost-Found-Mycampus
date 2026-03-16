@@ -8,7 +8,7 @@ services:
     plan: free
     envVars:
       - key: DATABASE_URL
-        value: file:./data/dev.db
+        value: file:./dev.db
       - key: JWT_SECRET
         generateValue: true
       - key: AI_ENGINE_URL
@@ -16,10 +16,6 @@ services:
           type: web
           name: lost-found-ai-engine
           property: host
-    disk:
-      name: sqlite-data
-      mountPath: /app/data
-      sizeGB: 1
 
   # AI Engine
   - type: web
