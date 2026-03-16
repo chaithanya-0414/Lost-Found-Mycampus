@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
@@ -86,7 +87,7 @@ const EditItem = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/items/${id}`);
+        const res = await axios.get(`${API_BASE_URL}/api/items/${id}`);
         const item = res.data;
         
         if (item.userId !== user.id && user.role !== 'admin') {
@@ -110,7 +111,7 @@ const EditItem = () => {
         }
         
         if (item.imageUrl) {
-            setPreview(`http://localhost:5000${item.imageUrl}`);
+            setPreview(`${API_BASE_URL}${item.imageUrl}`);
         }
       } catch (err) {
         console.error('Error fetching item:', err);
@@ -153,7 +154,7 @@ const EditItem = () => {
     if (image) data.append('image', image);
 
     try {
-      await axios.put(`http://localhost:5000/api/items/${id}`, data, {
+      await axios.put(`${API_BASE_URL}/api/items/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${user.token}`

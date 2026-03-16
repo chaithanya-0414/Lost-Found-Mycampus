@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import { Search, MapPin, Calendar, Tag, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -13,7 +14,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/items');
+        const res = await axios.get(`${API_BASE_URL}/api/items`);
         setItems(res.data);
       } catch (err) {
         console.error('Error fetching items:', err);
@@ -89,7 +90,7 @@ const Dashboard = () => {
               <div className="h-48 overflow-hidden bg-dashboard-bg relative">
                 {item.imageUrl ? (
                   <img 
-                    src={`http://localhost:5000${item.imageUrl}`} 
+                    src={`${API_BASE_URL}${item.imageUrl}`} 
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />

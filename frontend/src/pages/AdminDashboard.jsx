@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Bar, Pie } from 'react-chartjs-2';
@@ -41,17 +42,17 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       // Fetch stats
-      const statsRes = await axios.get('http://localhost:5000/api/admin/stats', {
+      const statsRes = await axios.get(`${API_BASE_URL}/api/admin/stats`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setStats(statsRes.data);
 
       // Fetch items for management list
-      const itemsRes = await axios.get('http://localhost:5000/api/items');
+      const itemsRes = await axios.get(`${API_BASE_URL}/api/items`);
       setItems(itemsRes.data);
 
       // Fetch users
-      const usersRes = await axios.get('http://localhost:5000/api/admin/users', {
+      const usersRes = await axios.get(`${API_BASE_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setUsers(usersRes.data);
@@ -69,7 +70,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to permanently delete this report? This action cannot be undone.')) {
       try {
-        await axios.delete(`http://localhost:5000/api/items/${id}`, {
+        await axios.delete(`${API_BASE_URL}/api/items/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         fetchData(); // Refresh data

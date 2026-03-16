@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
@@ -114,7 +115,7 @@ const ReportItem = () => {
     if (image) data.append('image', image);
 
     try {
-      await axios.post('http://localhost:5000/api/items/report', data, {
+      await axios.post(`${API_BASE_URL}/api/items/report`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${user.token}`

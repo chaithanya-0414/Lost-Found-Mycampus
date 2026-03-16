@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import { useAuth } from '../context/AuthContext';
 import { MapPin, Calendar, Tag, User, ShieldCheck, Sparkles, Send, CheckCircle, Phone, Mail, Trash2, Edit } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
@@ -20,7 +21,7 @@ const ItemDetails = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/items/${id}`);
+        const res = await axios.get(`${API_BASE_URL}/api/items/${id}`);
         setItem(res.data);
       } catch (err) {
         console.error('Error fetching item:', err);
@@ -39,7 +40,7 @@ const ItemDetails = () => {
 
   const fetchClaims = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/items/${id}/claims`, {
+      const res = await axios.get(`${API_BASE_URL}/api/items/${id}/claims`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setIncomingClaims(res.data);
@@ -50,12 +51,12 @@ const ItemDetails = () => {
 
   const handleRespondClaim = async (claimId, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/items/claims/${claimId}`, { status }, {
+      await axios.put(`${API_BASE_URL}/api/items/claims/${claimId}`, { status }, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       fetchClaims();
       // Refresh item to show 'claimed' status if approved
-      const res = await axios.get(`http://localhost:5000/api/items/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/api/items/${id}`);
       setItem(res.data);
     } catch (err) {
       console.error('Error responding to claim:', err);
@@ -65,7 +66,7 @@ const ItemDetails = () => {
   const handleClaim = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/items/${id}/claim`, { answers: claimAnswers }, {
+      await axios.post(`${API_BASE_URL}/api/items/${id}/claim`, { answers: claimAnswers }, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
@@ -79,7 +80,7 @@ const ItemDetails = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this item?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/items/${id}`, {
+        await axios.delete(`${API_BASE_URL}/api/items/${id}`, {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -107,7 +108,7 @@ const ItemDetails = () => {
         >
           {item.imageUrl ? (
             <img 
-              src={`http://localhost:5000${item.imageUrl}`} 
+              src={`${API_BASE_URL}${item.imageUrl}`} 
               alt={item.title} 
               className="w-full h-full object-cover"
             />
