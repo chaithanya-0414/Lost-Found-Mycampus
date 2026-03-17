@@ -1,23 +1,41 @@
+version: '3.8'
+
 services:
   backend:
     build: ./backend
+    container_name: lost-found-backend
     ports:
       - "5000:5000"
     environment:
       - DATABASE_URL=file:./dev.db
       - JWT_SECRET=super_secret_jwt_key_123
       - AI_ENGINE_URL=http://ai-engine:8000
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/prisma:/app/prisma
     depends_on:
       - ai-engine
+    networks:
+      - app-network
 
   ai-engine:
     build: ./ai-engine
+    container_name: lost-found-ai-engine
     ports:
       - "8000:8000"
+    networks:
+      - app-network
 
   frontend:
     build: ./frontend
+    container_name: lost-found-frontend
     ports:
-      - "5173:5173"
+      - "80:80"
     depends_on:
       - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
