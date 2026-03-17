@@ -5,10 +5,9 @@
     { "src": "backend/index.js", "use": "@vercel/node" },
     { "src": "ai-engine/main.py", "use": "@vercel/python" }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "backend/index.js" },
-    { "src": "/ai/(.*)", "dest": "ai-engine/main.py" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "frontend/index.html" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "backend/index.js" },
+    { "source": "/ai/(.*)", "destination": "ai-engine/main.py" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

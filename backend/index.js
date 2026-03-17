@@ -33,8 +33,11 @@ const itemRoutes = require('./routes/items');
 const adminRoutes = require('./routes/admin');
 
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/items', itemRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     app.listen(PORT, () => {
