@@ -33,6 +33,6 @@ services:
     dockerContext: ./frontend
     dockerfilePath: Dockerfile
     plan: free
-    envVars:
+    buildArgs:
       - key: VITE_API_URL
         value: https://lost-found-backend-pcn.onrender.com
