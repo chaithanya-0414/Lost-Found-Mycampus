@@ -2,12 +2,10 @@
   "version": 2,
   "builds": [
     { "src": "frontend/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } },
-    { "src": "api/index.js", "use": "@vercel/node" },
-    { "src": "ai-engine/main.py", "use": "@vercel/python" }
+    { "src": "api/index.js", "use": "@vercel/node" }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/ai/(.*)", "destination": "ai-engine/main.py" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
