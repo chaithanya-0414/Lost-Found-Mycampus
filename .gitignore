@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Database
+prisma/*.db
+prisma/*.db-journal
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
